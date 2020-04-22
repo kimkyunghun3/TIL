@@ -235,5 +235,15 @@ isEqualTo
     - assertj의 동등 비교 메소드
     - assertThat에 있는 값과 isEqualTo의 값을 비교해서 같을때만 성공
 
+@RequestParam
+    - 외부에서 API로 넘긴 파라미터를 가져오는 어노테이션
+    
+param
+    - API 테스트 할 때 사용될 요청 파라미터를 설정
+    - 단, 값은 String만 허용
+    - 숫자/날짜 등의 데이터도 등록할 때 문자열로 변경해야 가능
 
+jsonPath
+    - JSON 응답값을 필드별로 검증할 수 있는 메소드
+    - $를 기준으로 필드명 명시
 ```
