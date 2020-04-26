@@ -48,6 +48,7 @@ Eden 영역에서 GC가 발생하면 이미 살아남은 객체가 존재하는 
 
 이렇게 Minor GC를 통해서 Old 영역까지 데이터가 쌓인 것을 간단히 나타내면 다음과 같다.
 
+![GC전과후의비교](./image/GC전과후의비교.png)
 JavaGarbage3
 그림 3 GC 전과 후의 비교
 
@@ -81,7 +82,8 @@ Serial GC는 적은 메모리와 CPU 코어 개수가 적을 때 적합한 방�
 Parallel GC (-XX:+UseParallelGC)
 Parallel GC는 Serial GC와 기본적인 알고리즘은 같지다. 그러나 Serial GC는 GC를 처리하는 스레드가 하나인 것에 비해, Parallel GC는 GC를 처리하는 쓰레드가 여러 개이다. 그렇기 때문에 Serial GC보다 빠른게 객체를 처리할 수 있다. Parallel GC는 메모리가 충분하고 코어의 개수가 많을 때 유리하다. Parallel GC는 Throughput GC라고도 부른다.
 
-다음 그림은 Serial GC와 Parallel GC의 스레드를 비교한 그림이다.JavaGarbage4
+다음 그림은 Serial GC와 Parallel GC의 스레드를 비교한 그림이다.
+![SerialGC와ParallelGC의차이](./image/SerialGC와ParallelGC의차이.png)
 그림 4 Serial GC와 Parallel GC의 차이 (이미지 출처: "Java Performance", p. 86)
 Parallel Old GC(-XX:+UseParallelOldGC)
 Parallel Old GC는 JDK 5 update 6부터 제공한 GC 방식이다. 앞서 설명한 Parallel GC와 비교하여 Old 영역의 GC 알고리즘만 다르다. 이 방식은 Mark-Summary-Compaction 단계를 거친다. Summary 단계는 앞서 GC를 수행한 영역에 대해서 별도로 살아 있는 객체를 식별한다는 점에서 Mark-Sweep-Compaction 알고리즘의 Sweep 단계와 다르며, 약간 더 복잡한 단계를 거친다.
@@ -91,6 +93,7 @@ CMS GC (-XX:+UseConcMarkSweepGC)
 
 JavaGarbage5
 
+![SerialGC와CMSGC](./image/SerialGC와CMSGC.png)
 그림 5 Serial GC와 CMS GC(이미지 출처)
 초기 Initial Mark 단계에서는 클래스 로더에서 가장 가까운 객체 중 살아 있는 객체만 찾는 것으로 끝낸다. 따라서, 멈추는 시간은 매우 짧다. 그리고 Concurrent Mark 단계에서는 방금 살아있다고 확인한 객체에서 참조하고 있는 객체들을 따라가면서 확인한다. 이 단계의 특징은 다른 스레드가 실행 중인 상태에서 동시에 진행된다는 것이다.
 
@@ -109,6 +112,8 @@ G1 GC
 
 다음 그림에서 보다시피, G1 GC는 바둑판의 각 영역에 객체를 할당하고 GC를 실행한다. 그러다가, 해당 영역이 꽉 차면 다른 영역에서 객체를 할당하고 GC를 실행한다. 즉, 지금까지 설명한 Young의 세가지 영역에서 데이터가 Old 영역으로 이동하는 단계가 사라진 GC 방식이라고 이해하면 된다. G1 GC는 장기적으로 말도 많고 탈도 많은 CMS GC를 대체하기 위해서 만들어 졌다.JavaGarbage6
 
+
+![G1GC의레이아웃](./image/G1GC의레이아웃.png)
 그림 6 G1 GC의 레이아웃(이미지 출처: "The Garbage-First Garbage Collector" (TS-5419), JavaOne 2008, p. 19)
 
 G1 GC의 가장 큰 장점은 성능이다. 지금까지 설명한 어떤 GC 방식보다도 빠르다. 하지만, JDK 6에서는 G1 GC를 early access라고 부르며 그냥 시험삼아 사용할 수만 있도록 한다. 그리고 JDK 7에서 정식으로 G1 GC를 포함하여 제공한다.
